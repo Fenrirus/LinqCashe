@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -18,12 +19,29 @@ namespace LinqCashe
         {
             using (SampleDataContext db = new SampleDataContext())
             {
-                Accounts acc = db.Accounts.SingleOrDefault(x => x.AccountNumber == 1);
-                acc.AccountBalance += 500;
-                db.SubmitChanges();
+                try
+                {
+                    updateDanych(db);
+                }
+                catch (ChangeConflictException) // nazwa błędu konfliktu
+                {
+                    db.ChangeConflicts.ResolveAll(RefreshMode.OverwriteCurrentValues); // sposoby rozwiązania
+                    db.SubmitChanges();
+                    updateDanych(db);
+                    getData();
+
+                }
             }
 
             }
+
+        private static void updateDanych(SampleDataContext db)
+        {
+            Accounts acc = db.Accounts.SingleOrDefault(x => x.AccountNumber == 1);
+            acc.AccountBalance += 500;
+            db.SubmitChanges();
+        }
+
         private void getData()
         {
             using (SampleDataContext db = new SampleDataContext())
