@@ -33,6 +33,9 @@ namespace LinqCashe
     partial void InsertStudents(Students instance);
     partial void UpdateStudents(Students instance);
     partial void DeleteStudents(Students instance);
+    partial void InsertAccounts(Accounts instance);
+    partial void UpdateAccounts(Accounts instance);
+    partial void DeleteAccounts(Accounts instance);
     #endregion
 		
 		public SampleDataContext() : 
@@ -70,6 +73,14 @@ namespace LinqCashe
 			get
 			{
 				return this.GetTable<Students>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Accounts> Accounts
+		{
+			get
+			{
+				return this.GetTable<Accounts>();
 			}
 		}
 	}
@@ -183,6 +194,116 @@ namespace LinqCashe
 					this._Gender = value;
 					this.SendPropertyChanged("Gender");
 					this.OnGenderChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Accounts")]
+	public partial class Accounts : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _AccountNumber;
+		
+		private string _AccountName;
+		
+		private System.Nullable<int> _AccountBalance;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAccountNumberChanging(int value);
+    partial void OnAccountNumberChanged();
+    partial void OnAccountNameChanging(string value);
+    partial void OnAccountNameChanged();
+    partial void OnAccountBalanceChanging(System.Nullable<int> value);
+    partial void OnAccountBalanceChanged();
+    #endregion
+		
+		public Accounts()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountNumber", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int AccountNumber
+		{
+			get
+			{
+				return this._AccountNumber;
+			}
+			set
+			{
+				if ((this._AccountNumber != value))
+				{
+					this.OnAccountNumberChanging(value);
+					this.SendPropertyChanging();
+					this._AccountNumber = value;
+					this.SendPropertyChanged("AccountNumber");
+					this.OnAccountNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountName", DbType="NVarChar(50)")]
+		public string AccountName
+		{
+			get
+			{
+				return this._AccountName;
+			}
+			set
+			{
+				if ((this._AccountName != value))
+				{
+					this.OnAccountNameChanging(value);
+					this.SendPropertyChanging();
+					this._AccountName = value;
+					this.SendPropertyChanged("AccountName");
+					this.OnAccountNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountBalance", DbType="Int")]
+		public System.Nullable<int> AccountBalance
+		{
+			get
+			{
+				return this._AccountBalance;
+			}
+			set
+			{
+				if ((this._AccountBalance != value))
+				{
+					this.OnAccountBalanceChanging(value);
+					this.SendPropertyChanging();
+					this._AccountBalance = value;
+					this.SendPropertyChanged("AccountBalance");
+					this.OnAccountBalanceChanged();
 				}
 			}
 		}
