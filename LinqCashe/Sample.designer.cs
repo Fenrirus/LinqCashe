@@ -231,6 +231,8 @@ namespace LinqCashe
 		
 		private System.Nullable<int> _AccountBalance;
 		
+		private System.Data.Linq.Binary _Version;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -241,6 +243,8 @@ namespace LinqCashe
     partial void OnAccountNameChanged();
     partial void OnAccountBalanceChanging(System.Nullable<int> value);
     partial void OnAccountBalanceChanged();
+    partial void OnVersionChanging(System.Data.Linq.Binary value);
+    partial void OnVersionChanged();
     #endregion
 		
 		public Accounts()
@@ -248,7 +252,7 @@ namespace LinqCashe
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountNumber", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountNumber", DbType="Int NOT NULL", IsPrimaryKey=true, UpdateCheck=UpdateCheck.Never)]
 		public int AccountNumber
 		{
 			get
@@ -268,7 +272,7 @@ namespace LinqCashe
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountName", DbType="NVarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountName", DbType="NVarChar(50)", UpdateCheck=UpdateCheck.Never)]
 		public string AccountName
 		{
 			get
@@ -288,7 +292,7 @@ namespace LinqCashe
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountBalance", DbType="Int")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountBalance", DbType="Int", UpdateCheck=UpdateCheck.Never)]
 		public System.Nullable<int> AccountBalance
 		{
 			get
@@ -304,6 +308,26 @@ namespace LinqCashe
 					this._AccountBalance = value;
 					this.SendPropertyChanged("AccountBalance");
 					this.OnAccountBalanceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Version", AutoSync=AutoSync.Always, DbType="rowversion NOT NULL", CanBeNull=false, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary Version
+		{
+			get
+			{
+				return this._Version;
+			}
+			set
+			{
+				if ((this._Version != value))
+				{
+					this.OnVersionChanging(value);
+					this.SendPropertyChanging();
+					this._Version = value;
+					this.SendPropertyChanged("Version");
+					this.OnVersionChanged();
 				}
 			}
 		}

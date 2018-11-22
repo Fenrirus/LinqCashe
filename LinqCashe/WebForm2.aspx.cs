@@ -22,6 +22,7 @@ namespace LinqCashe
                 try
                 {
                     updateDanych(db);
+                    getData();
                 }
                 catch (ChangeConflictException) // nazwa błędu konfliktu
                 {
@@ -40,6 +41,7 @@ namespace LinqCashe
             Accounts acc = db.Accounts.SingleOrDefault(x => x.AccountNumber == 1);
             acc.AccountBalance += 500;
             db.SubmitChanges();
+            
         }
 
         private void getData()
